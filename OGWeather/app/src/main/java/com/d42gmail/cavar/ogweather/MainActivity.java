@@ -1,7 +1,10 @@
 package com.d42gmail.cavar.ogweather;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,10 +31,11 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     ListView CityList;
     EditText Edit;
-    Button Add,Refresh;
+    Button Add,Save;
     ArrayList<CityInfo> CityWeather=new ArrayList<CityInfo>();
+    ArrayList<String> NameCity=new ArrayList<String>();
     ShowAdapter adapter;
-    int flag=0;
+    int br=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,19 +46,40 @@ public class MainActivity extends AppCompatActivity {
 
         CityList= (ListView) findViewById(R.id.listView);
         Add= (Button) findViewById(R.id.button);
-        Refresh= (Button) findViewById(R.id.button2);
+        Save= (Button) findViewById(R.id.button2);
         Edit= (EditText) findViewById(R.id.editText);
         adapter=new ShowAdapter(this,CityWeather);
         CityList.setAdapter(adapter);
 
-           GetWeatherTask myTask = new GetWeatherTask();
-           myTask.execute("http://api.openweathermap.org/data/2.5/weather?q=Vinkovci&appid=2a8fc52212d1d020c4b3ac497469a6ef");
+        SharedPreferences cityPref=getSharedPreferences("NAMECITY",0);
+        int br1=cityPref.getInt("br",0);
+        for(int i=0;i<br1;i++)
+        {
+            String c1=cityPref.getString("ab"+i,"");
+            GetWeatherTask myTask2 = new GetWeatherTask();
+            myTask2.execute("http://api.openweathermap.org/data/2.5/weather?q=="+c1+"&appid=2a8fc52212d1d020c4b3ac497469a6ef");
+            NameCity.add(c1);
             adapter.notifyDataSetChanged();
+        }
 
-        Refresh.setOnClickListener(new View.OnClickListener() {
+
+        Save.setOnClickListener(new View.OnClickListener() {  //save
             @Override
             public void onClick(View v) {
                 adapter.notifyDataSetChanged();
+
+                SharedPreferences cityPref=getSharedPreferences("NAMECITY",0);
+                SharedPreferences.Editor editor=cityPref.edit();
+                editor.clear();
+               // editor.commit();
+                for(String namecity:NameCity){
+                editor.putString("ab"+br,namecity);
+                    br++;
+                }
+                editor.putInt("br",br);
+                editor.commit();
+
+
             }
         });
         Add.setOnClickListener(new View.OnClickListener() {
@@ -62,10 +87,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
                 GetWeatherTask myTask1 = new GetWeatherTask();
                 myTask1.execute("http://api.openweathermap.org/data/2.5/weather?q=="+Edit.getText().toString()+"&appid=2a8fc52212d1d020c4b3ac497469a6ef");
                 adapter.notifyDataSetChanged();
+
+                NameCity.add(Edit.getText().toString());
             }
         });
 
@@ -73,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 CityWeather.remove(position);
+                NameCity.remove(position);
                 adapter.notifyDataSetChanged();
                 return false;
             }
