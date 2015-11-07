@@ -5,20 +5,29 @@ package com.d42gmail.cavar.ogweather;
  */
 public class CityInfo {
     String City;
-    String Description;
+    String Description,IconInfo;
     int max;
     int weatherIco;
 
 
-    public CityInfo (String City,String Description, int max,int weatherIco)
+    public CityInfo (String City,String Description,String IconInfo, int max,int weatherIco)
     {super();
 
         this.City=City;
         this.Description=Description;
         this.max=max;
         this.weatherIco=weatherIco;
+        this.IconInfo=IconInfo;
 
 
+    }
+
+    public String getIconInfo() {
+        return IconInfo;
+    }
+
+    public void setIconInfo(String iconInfo) {
+        IconInfo = iconInfo;
     }
 
     public CityInfo ()
