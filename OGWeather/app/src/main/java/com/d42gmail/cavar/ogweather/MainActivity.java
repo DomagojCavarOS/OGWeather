@@ -1,6 +1,7 @@
 package com.d42gmail.cavar.ogweather;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
@@ -33,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
     EditText Edit;
     Button Add,Save;
     ArrayList<CityInfo> CityWeather=new ArrayList<CityInfo>();
-    ArrayList<String> NameCity=new ArrayList<String>();
     ShowAdapter adapter;
     int br=0;
 
@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
             String c1=cityPref.getString("ab"+i,"");
             GetWeatherTask myTask2 = new GetWeatherTask();
             myTask2.execute("http://api.openweathermap.org/data/2.5/weather?q=="+c1+"&appid=2a8fc52212d1d020c4b3ac497469a6ef");
-            NameCity.add(c1);
             adapter.notifyDataSetChanged();
         }
 
@@ -72,9 +71,10 @@ public class MainActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor=cityPref.edit();
                 editor.clear();
                // editor.commit();
-                for(String namecity:NameCity){
-                editor.putString("ab"+br,namecity);
-                    br++;
+                for(CityInfo namecity:CityWeather){
+                    String x=namecity.getCity();
+                editor.putString("ab"+br,x);
+                   br++;
                 }
                 editor.putInt("br",br);
                 editor.commit();
@@ -88,10 +88,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 GetWeatherTask myTask1 = new GetWeatherTask();
-                myTask1.execute("http://api.openweathermap.org/data/2.5/weather?q=="+Edit.getText().toString()+"&appid=2a8fc52212d1d020c4b3ac497469a6ef");
+                myTask1.execute("http://api.openweathermap.org/data/2.5/weather?q==" + Edit.getText().toString() + "&appid=2a8fc52212d1d020c4b3ac497469a6ef");
                 adapter.notifyDataSetChanged();
 
-                NameCity.add(Edit.getText().toString());
             }
         });
 
@@ -99,13 +98,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 CityWeather.remove(position);
-                NameCity.remove(position);
                 adapter.notifyDataSetChanged();
                 return false;
             }
         });
 
-
+        CityList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                CityInfo cty= (CityInfo) adapter.getItem(position);
+                Intent intent=new Intent(MainActivity.this,ShowMore.class);
+                intent.putExtra("cityName",cty.getCity());
+                startActivityForResult(intent,0);
+            }
+        });
     }
     public class GetWeatherTask extends AsyncTask<String, Integer,CityInfo>{
 

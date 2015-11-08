@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:orientation="vertical" >
+
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:padding="5dp"
+        android:id="@+id/slija"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/ime"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/slija"
+        android:layout_toEndOf="@+id/slija"
+        android:layout_marginTop="5dp"
+        android:textSize="20sp"
+        android:textColor="@color/gray"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/opis"
+        android:layout_below="@+id/ime"
+        android:layout_toRightOf="@+id/slija"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/slija"
+        android:textSize="15sp"
+        android:textColor="@color/gray"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/temp"
+        android:layout_below="@+id/opis"
+        android:layout_toRightOf="@+id/slija"
+        android:layout_toEndOf="@+id/slija"
+        android:layout_marginTop="5dp"
+        android:textSize="15sp"
+        android:textColor="@color/gray"
+        />
+</RelativeLayout>
