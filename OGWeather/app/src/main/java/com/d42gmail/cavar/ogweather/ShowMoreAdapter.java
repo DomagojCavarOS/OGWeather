@@ -48,12 +48,13 @@ public class ShowMoreAdapter extends BaseAdapter {
         TextView ime= (TextView) convertView.findViewById(R.id.ime);
         TextView opis= (TextView) convertView.findViewById(R.id.opis);
         TextView temp= (TextView) convertView.findViewById(R.id.temp);
+        TextView date= (TextView) convertView.findViewById(R.id.date);
 
-        // Weather.setImageResource(current.getImage());
-        Weather.setImageResource(R.drawable.error);
-        ime.setText("" + current.getCitaName());
-        opis.setText(String.format("%s,%s",current.getDescription(),current.getClouds()));
-        temp.setText(String.format("Average day temp: %s \n Min day temp: %s \n Max day temp: %s \n Average night temp: %s",current.getAverageT(),current.getMinT(),current.getMaxT(),current.getNightT()));
+        Weather.setImageResource(current.getIcoID());
+      //  date.setText(""+current.getDay());
+        ime.setText(""+current.getCitaName());
+        opis.setText(String.format(" %s", current.getDescription()));
+        temp.setText(String.format(" Average day temp: %s \n Min day temp: %s \n Max day temp: %s \n Average night temp: %s",current.getAverageT(),current.getMinT(),current.getMaxT(),current.getNightT()));
 
         return convertView;
     }

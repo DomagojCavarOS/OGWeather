@@ -1,13 +1,16 @@
 package com.d42gmail.cavar.ogweather;
 
+import java.util.Date;
+
 /**
  * Created by Enigma on 8.11.2015..
  */
 public class MoreCityInfo {
-    String CitaName,Day,Clouds,Description;
+    String CitaName,Clouds,Description;
     Integer AverageT,minT,maxT,nightT,image,icoID;
+    Date Day;
 
-    public MoreCityInfo(String CitaName, String Day, String Clouds,String Description, Integer AverageT, Integer minT, Integer maxT, Integer nightT, Integer image, Integer icoID) {
+    public MoreCityInfo(String CitaName, Date Day, String Clouds,String Description, Integer AverageT, Integer minT, Integer maxT, Integer nightT, Integer image, Integer icoID) {
         this.CitaName = CitaName;
         this.Day = Day;
         this.Clouds = Clouds;
@@ -24,7 +27,6 @@ public class MoreCityInfo {
 
     public MoreCityInfo() {
         this.CitaName = "N/A";
-        this.Day = "N/A";
         this.Clouds = "N/A";
         this.AverageT = 0;
         this.minT = 0;
@@ -56,11 +58,11 @@ public class MoreCityInfo {
         CitaName = citaName;
     }
 
-    public String getDay() {
+    public Date getDay() {
         return Day;
     }
 
-    public void setDay(String day) {
+    public void setDay(Date day) {
         Day = day;
     }
 

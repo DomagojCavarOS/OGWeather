@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
                 editor.clear();
                // editor.commit();
                 for(CityInfo namecity:CityWeather){
-                    String x=namecity.getCity();
-                editor.putString("ab"+br,x);
+                    //String x=namecity.getCity();
+                editor.putString("ab"+br,namecity.getCity());
                    br++;
                 }
                 editor.putInt("br",br);
@@ -144,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public  void onPostExecute(CityInfo result) {
+            CityWeather.add(result);
             adapter.notifyDataSetChanged();
 
         }
@@ -152,17 +153,15 @@ public class MainActivity extends AppCompatActivity {
             CityInfo CityObject=new CityInfo();
             try {
                 JSONObject completeData = new JSONObject(jsonString);
-                String name=completeData.getString("name");
+                CityObject.setCity(completeData.getString("name"));
                 JSONObject mainData = completeData.getJSONObject("main");
-                int max= (int) ((mainData.getDouble("temp_max"))-273.15);
+                CityObject.setMax ((int) ((mainData.getDouble("temp_max"))-273.15));
                 JSONArray weatherData = completeData.getJSONArray("weather");
-                JSONObject conditionData = weatherData.getJSONObject(weatherData.length() - 1);
-                String weatherDescription=conditionData.getString("description");
-                String Ico=conditionData.getString("icon");
-                int weatherID = conditionData.getInt("id");
-                int weatherID1=WeatherIcon(weatherID,Ico);
-                CityWeather.add(new CityInfo(name,weatherDescription,Ico,max,weatherID1));
-                adapter.notifyDataSetChanged();
+                JSONObject conditionData = weatherData.getJSONObject(weatherData.length()-1);
+                Log.i("ii", "" + weatherData.length());
+                CityObject.setDescription(conditionData.getString("description"));
+                CityObject.setWeatherIco(WeatherIcon(conditionData.getString("icon")));
+
 
             } catch (JSONException e) { e.printStackTrace();}
             return CityObject;
@@ -170,89 +169,54 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public int WeatherIcon(int a,String ico) {
-        if((a==200)||(a==201)||(a==202)||(a==210)||(a==211)||(a==212)||(a==221)||(a==230)||(a==231)||(a==232))
-        {
-            return R.drawable.b12;
-        }
-        else if((a==300)||(a==301)||(a==302)||(a==310)||(a==311)||(a==312)||(a==313)||(a==314)||(a==321))
-        {
-            return R.drawable.b15;
-        }
-        else if((a==520)||(a==521)||(a==522)||(a==531))
-        {
-            return R.drawable.b2;
-        }
-        else if((a==502)||(a==503)||(a==504)||(a==511))
-        {
-            return R.drawable.b6;
-        }
-        else if((a==501))
-        {
-            return R.drawable.b7;
-        }
-        else if((a==500))
-        {
-            return R.drawable.b8;
-        }
-        else if((a==611)||(a==612)||(a==615)||(a==616))
-        {
-            return R.drawable.b16;
-        }
-        else if((a==602)||(a==622))
-        {
-            return R.drawable.b9;
-        }
-        else if((a==601)||(a==621))
-        {
-            return R.drawable.b10;
-        }
-        else if((a==600)||(a==620))
-        {
-            return R.drawable.b11;
-        }
-        else if((a==701)||(a==711)||(a==721)||(a==731)||(a==741)||(a==751)||(a==761)||(a==762)||(a==771)||(a==781))
-        {
-            return R.drawable.b14;
-        }
-        else if((a==800)&&(ico.equals("01d")))
+    public int WeatherIcon(String ico) {
+        if(ico.equals("01d"))
         {
             return R.drawable.b13;
         }
-        else if((a==800)&&(ico.equals("01n")))
+        else if(ico.equals("01n"))
         {
             return R.drawable.b3;
         }
-        else if(((a==801)&&(ico.equals("02d")))||((a==802)&&(ico.equals("02d")))||((a==803)&&(ico.equals("02d")))||((a==804)&&(ico.equals("02d"))))
+        else if(ico.equals("02d"))
         {
             return R.drawable.b5;
         }
-        else if(((a==801)&&(ico.equals("03d")))||((a==802)&&(ico.equals("03d")))||((a==803)&&(ico.equals("03d")))||((a==804)&&(ico.equals("03d"))))
-        {
-            return R.drawable.b5;
-        }
-        else if(((a==801)&&(ico.equals("04d")))||((a==802)&&(ico.equals("04d")))||((a==803)&&(ico.equals("04d")))||((a==804)&&(ico.equals("04d"))))
-        {
-            return R.drawable.b5;
-        }
-        else if(((a==801)&&(ico.equals("02n")))||((a==802)&&(ico.equals("02n")))||((a==803)&&(ico.equals("02n")))||((a==804)&&(ico.equals("02n"))))
+        else if(ico.equals("02n"))
         {
             return R.drawable.b4;
         }
-        else if(((a==801)&&(ico.equals("03n")))||((a==802)&&(ico.equals("03n")))||((a==803)&&(ico.equals("03n")))||((a==804)&&(ico.equals("03n"))))
+        else if((ico.equals("03d"))||ico.equals("04d")||ico.equals("03n")||ico.equals("04n"))
         {
-            return R.drawable.b4;
+            return R.drawable.b1;
         }
-        else if(((a==801)&&(ico.equals("04n")))||((a==802)&&(ico.equals("04n")))||((a==803)&&(ico.equals("04n")))||((a==804)&&(ico.equals("04n"))))
+        else if((ico.equals("09d"))||(ico.equals("09n")))
         {
-            return R.drawable.b4;
+            return R.drawable.b2;
+        }
+        else if((ico.equals("10d"))||(ico.equals("10n")))
+        {
+            return R.drawable.b6;
+        }
+        else if((ico.equals("11d"))||(ico.equals("11n")))
+        {
+            return R.drawable.b12;
+        }
+        else if((ico.equals("13d"))||(ico.equals("13n")))
+        {
+            return R.drawable.b9;
+        }
+        else if((ico.equals("50d"))||(ico.equals("50n")))
+        {
+            return R.drawable.b14;
         }
         else
         {
             return R.drawable.error;
-            }
+        }
+    }
     }
 
-}
+
 
 
