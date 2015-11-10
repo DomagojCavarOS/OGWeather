@@ -46,6 +46,10 @@ public class CityInfo {
         return Description;
     }
 
+    public String getTrimName(){
+        return City.trim().replace(" ","");
+    }
+
     public double getMax() {
         return max;
     }

@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor=cityPref.edit();
                 editor.clear();
                 for(CityInfo namecity:CityWeather){
-                editor.putString("ab"+br,namecity.getCity());
+                editor.putString("ab"+br,namecity.getTrimName());
                    br++;
                 }
                 editor.putInt("br",br);
@@ -86,10 +86,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 GetWeatherTask myTask1 = new GetWeatherTask();
-                String nameCTY;
-                nameCTY=Edit.getText().toString();
-                nameCTY=nameCTY.trim();
-                myTask1.execute("http://api.openweathermap.org/data/2.5/weather?q==" + nameCTY + "&appid=2a8fc52212d1d020c4b3ac497469a6ef");
+                myTask1.execute("http://api.openweathermap.org/data/2.5/weather?q==" + Edit.getText().toString().trim().replace(" ","") + "&appid=2a8fc52212d1d020c4b3ac497469a6ef");
                 adapter.notifyDataSetChanged();
                 Save.setEnabled(true);
 
@@ -111,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CityInfo cty= (CityInfo) adapter.getItem(position);
                 Intent intent=new Intent(MainActivity.this,ShowMore.class);
-                intent.putExtra("cityName",cty.getCity());
+                intent.putExtra("cityName",cty.getTrimName());
                 startActivityForResult(intent,0);
             }
         });

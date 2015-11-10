@@ -25,7 +25,6 @@ public class ShowMore extends AppCompatActivity {
     ArrayList<MoreCityInfo> MCI = new ArrayList<MoreCityInfo>();
     ListView MCIview;
     ShowMoreAdapter adapter;
-    String n;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +34,7 @@ public class ShowMore extends AppCompatActivity {
         MCIview = (ListView) findViewById(R.id.listView2);
 
         Bundle b = getIntent().getExtras();
-        n = b.getString("cityName");
-        Log.i("ii", "" + n);
+        String n = b.getString("cityName");
 
         adapter = new ShowMoreAdapter(getApplicationContext(), MCI);
         MCIview.setAdapter(adapter);
@@ -87,9 +85,10 @@ public class ShowMore extends AppCompatActivity {
                 j--) {
                 try {
                     MoreCityInfo MoreObj=new MoreCityInfo();
-                    MoreObj.setCitaName(n);
 
                     JSONObject completeData = new JSONObject(jsonString);
+                    JSONObject complateCity=completeData.getJSONObject("city");
+                    MoreObj.setCitaName(complateCity.getString("name"));
                     JSONArray listArray = completeData.getJSONArray("list");
                     JSONObject listData = listArray.getJSONObject(listArray.length() - j);
                     JSONObject tempData = listData.getJSONObject("temp");
