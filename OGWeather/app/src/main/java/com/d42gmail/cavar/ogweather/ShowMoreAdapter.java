@@ -7,6 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 
 /**
@@ -51,7 +52,8 @@ public class ShowMoreAdapter extends BaseAdapter {
         TextView date= (TextView) convertView.findViewById(R.id.date);
 
         Weather.setImageResource(current.getIcoID());
-      //  date.setText(""+current.getDay());
+        DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(ctx);
+        date.setText("" + dateFormat.format(current.getDay()));
         ime.setText(""+current.getCitaName());
         opis.setText(String.format(" %s", current.getDescription()));
         temp.setText(String.format(" Average day temp: %s \n Min day temp: %s \n Max day temp: %s \n Average night temp: %s",current.getAverageT(),current.getMinT(),current.getMaxT(),current.getNightT()));

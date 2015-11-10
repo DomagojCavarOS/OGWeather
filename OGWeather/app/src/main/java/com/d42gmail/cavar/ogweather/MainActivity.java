@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         Edit= (EditText) findViewById(R.id.editText);
         adapter=new ShowAdapter(this,CityWeather);
         CityList.setAdapter(adapter);
-
+        Save.setEnabled(false);
         SharedPreferences cityPref=getSharedPreferences("NAMECITY",0);
         int br1=cityPref.getInt("br",0);
         for(int i=0;i<br1;i++)
@@ -66,13 +66,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 adapter.notifyDataSetChanged();
-
+                Save.setEnabled(false);
                 SharedPreferences cityPref=getSharedPreferences("NAMECITY",0);
                 SharedPreferences.Editor editor=cityPref.edit();
                 editor.clear();
-               // editor.commit();
                 for(CityInfo namecity:CityWeather){
-                    //String x=namecity.getCity();
                 editor.putString("ab"+br,namecity.getCity());
                    br++;
                 }
@@ -88,8 +86,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 GetWeatherTask myTask1 = new GetWeatherTask();
-                myTask1.execute("http://api.openweathermap.org/data/2.5/weather?q==" + Edit.getText().toString() + "&appid=2a8fc52212d1d020c4b3ac497469a6ef");
+                String nameCTY;
+                nameCTY=Edit.getText().toString();
+                nameCTY=nameCTY.trim();
+                myTask1.execute("http://api.openweathermap.org/data/2.5/weather?q==" + nameCTY + "&appid=2a8fc52212d1d020c4b3ac497469a6ef");
                 adapter.notifyDataSetChanged();
+                Save.setEnabled(true);
 
             }
         });
@@ -99,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 CityWeather.remove(position);
                 adapter.notifyDataSetChanged();
+                Save.setEnabled(true);
                 return false;
             }
         });

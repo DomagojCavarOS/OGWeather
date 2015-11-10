@@ -90,30 +90,19 @@ public class ShowMore extends AppCompatActivity {
                     MoreObj.setCitaName(n);
 
                     JSONObject completeData = new JSONObject(jsonString);
-                    JSONArray test = completeData.getJSONArray("list");
-                    JSONObject objtest = test.getJSONObject(test.length() - j);
-                    Log.i("ii", "" + (test.length()-j));
-                    JSONObject objtest1 = objtest.getJSONObject("temp");
-                    Log.i("ii", "" + objtest1.getDouble("day"));
-                    Log.i("ii", "" + objtest1.getDouble("min"));
-                    Log.i("ii", "" + objtest1.getDouble("max"));
-                    Log.i("ii", "" + objtest1.getDouble("night"));
-
-                    MoreObj.setDay(new java.util.Date(Long.parseLong(objtest.getString("dt"))));
-                    MoreObj.setDay(new java.util.Date(Long.parseLong(objtest.getString("dt"))));
-                    MoreObj.setAverageT((int) ((int) objtest1.getDouble("day") - 273.15));
-                    MoreObj.setMinT((int) ((int) objtest1.getDouble("min") - 273.15));
-                    MoreObj.setMaxT((int) ((int) objtest1.getDouble("max") - 273.15));
-                    MoreObj.setNightT((int) ((int) objtest1.getDouble("night") - 273.15));
-
-                    JSONArray test2=objtest.getJSONArray("weather");
-                    JSONObject objtest2 = test2.getJSONObject(test2.length()-1);
-                    Log.i("ii", "" + objtest2.getString("main"));
-                    Log.i("ii", "" + objtest2.getString("description"));
-
-                    MoreObj.setClouds(objtest2.getString("main"));
-                    MoreObj.setDescription(objtest2.getString("description"));
-                    MoreObj.setIcoID(WeatherIcon(objtest2.getString("icon")));
+                    JSONArray listArray = completeData.getJSONArray("list");
+                    JSONObject listData = listArray.getJSONObject(listArray.length() - j);
+                    JSONObject tempData = listData.getJSONObject("temp");
+                    MoreObj.setDay(new java.util.Date((listData.getLong("dt") * 1000)));
+                    MoreObj.setAverageT((int) ((int) tempData.getDouble("day") - 273.15));
+                    MoreObj.setMinT((int) ((int) tempData.getDouble("min") - 273.15));
+                    MoreObj.setMaxT((int) ((int) tempData.getDouble("max") - 273.15));
+                    MoreObj.setNightT((int) ((int) tempData.getDouble("night") - 273.15));
+                    JSONArray weatherArray=listData.getJSONArray("weather");
+                    JSONObject weatherData = weatherArray.getJSONObject(weatherArray.length()-1);
+                    MoreObj.setClouds(weatherData.getString("main"));
+                    MoreObj.setDescription(weatherData.getString("description"));
+                    MoreObj.setIcoID(WeatherIcon(weatherData.getString("icon")));
 
                     MCI.add(MoreObj);
 
@@ -129,6 +118,7 @@ public class ShowMore extends AppCompatActivity {
             return null;
         }
     }
+
     public int WeatherIcon(String ico) {
         if(ico.equals("01d"))
         {
