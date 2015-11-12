@@ -24,7 +24,7 @@
         android:layout_toEndOf="@+id/slija"
         android:layout_marginTop="5dp"
         android:textSize="20sp"
-        android:textColor="@color/gray"
+        android:textColor="@color/black"
         />
 
     <TextView
@@ -37,7 +37,7 @@
         android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/slija"
         android:textSize="15sp"
-        android:textColor="@color/gray"
+        android:textColor="@color/black"
         />
 
     <TextView
@@ -50,7 +50,7 @@
         android:layout_toEndOf="@+id/slija"
         android:layout_marginTop="5dp"
         android:textSize="15sp"
-        android:textColor="@color/gray"
+        android:textColor="@color/black"
         />
 
     <TextView
@@ -62,5 +62,5 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:textSize="20sp"
-        android:textColor="@color/gray"/>
+        android:textColor="@color/black"/>
 </RelativeLayout>

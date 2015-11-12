@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -51,14 +52,20 @@ public class MainActivity extends AppCompatActivity {
         adapter=new ShowAdapter(this,CityWeather);
         CityList.setAdapter(adapter);
         Save.setEnabled(false);
-        SharedPreferences cityPref=getSharedPreferences("NAMECITY",0);
-        int br1=cityPref.getInt("br",0);
-        for(int i=0;i<br1;i++)
-        {
-            String c1=cityPref.getString("ab"+i,"");
-            GetWeatherTask myTask2 = new GetWeatherTask();
-            myTask2.execute("http://api.openweathermap.org/data/2.5/weather?q=="+c1+"&appid=2a8fc52212d1d020c4b3ac497469a6ef");
-            adapter.notifyDataSetChanged();
+
+        if(internetConnection(getApplicationContext())==true) {
+
+            SharedPreferences cityPref = getSharedPreferences("NAMECITY", 0);
+            int br1 = cityPref.getInt("br", 0);
+            for (int i = 0; i < br1; i++) {
+                String c1 = cityPref.getString("ab" + i, "");
+                GetWeatherTask myTask2 = new GetWeatherTask();
+                myTask2.execute("http://api.openweathermap.org/data/2.5/weather?q==" + c1 + "&appid=2a8fc52212d1d020c4b3ac497469a6ef");
+                adapter.notifyDataSetChanged();
+            }
+        }
+        else{
+            Toast.makeText(getApplicationContext(),"Please, check Internet connection",Toast.LENGTH_LONG).show();
         }
 
 
@@ -214,6 +221,10 @@ public class MainActivity extends AppCompatActivity {
         {
             return R.drawable.error;
         }
+    }
+
+    public boolean internetConnection( Context context) {
+        return ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo() != null;
     }
     }
 
