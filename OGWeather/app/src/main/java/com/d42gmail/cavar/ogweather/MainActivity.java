@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     ListView CityList;
     EditText Edit;
     Button Add,Save;
+    //DatabaseHelper myDatabaseHelper;
     ArrayList<CityInfo> CityWeather=new ArrayList<CityInfo>();
     ShowAdapter adapter;
     int br=0;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+      //  myDatabaseHelper = new DatabaseHelper(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         CityList= (ListView) findViewById(R.id.listView);
@@ -53,9 +55,20 @@ public class MainActivity extends AppCompatActivity {
         CityList.setAdapter(adapter);
         Save.setEnabled(false);
 
-        if(internetConnection(getApplicationContext())==true) {
 
-            SharedPreferences cityPref = getSharedPreferences("NAMECITY", 0);
+        if(internetConnection(getApplicationContext())==true) {
+            /*
+            CityWeather.clear();
+            CityWeather.addAll(myDatabaseHelper.getResultDBs());
+
+            for(CityInfo namecity:CityWeather){
+                GetWeatherTask myTask2 = new GetWeatherTask();
+                myTask2.execute("http://api.openweathermap.org/data/2.5/weather?q==" + namecity.getTrimName() + "&appid=2a8fc52212d1d020c4b3ac497469a6ef");
+                adapter.notifyDataSetChanged();
+
+            }*/
+
+          SharedPreferences cityPref = getSharedPreferences("NAMECITY", 0);
             int br1 = cityPref.getInt("br", 0);
             for (int i = 0; i < br1; i++) {
                 String c1 = cityPref.getString("ab" + i, "");
@@ -74,6 +87,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 adapter.notifyDataSetChanged();
                 Save.setEnabled(false);
+                /*
+                for(CityInfo namecity:CityWeather){
+                    myDatabaseHelper.addData(namecity,MainActivity.this);
+                }*/
+
+
+
                 SharedPreferences cityPref=getSharedPreferences("NAMECITY",0);
                 SharedPreferences.Editor editor=cityPref.edit();
                 editor.clear();
@@ -93,9 +113,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 GetWeatherTask myTask1 = new GetWeatherTask();
-                myTask1.execute("http://api.openweathermap.org/data/2.5/weather?q==" + Edit.getText().toString().trim().replace(" ","") + "&appid=2a8fc52212d1d020c4b3ac497469a6ef");
+                myTask1.execute("http://api.openweathermap.org/data/2.5/weather?q==" + Edit.getText().toString().trim().replace(" ", "") + "&appid=2a8fc52212d1d020c4b3ac497469a6ef");
                 adapter.notifyDataSetChanged();
                 Save.setEnabled(true);
+
 
             }
         });
