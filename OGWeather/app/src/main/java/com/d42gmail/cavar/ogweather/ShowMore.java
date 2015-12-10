@@ -25,6 +25,7 @@ public class ShowMore extends AppCompatActivity {
     ArrayList<MoreCityInfo> MCI = new ArrayList<MoreCityInfo>();
     ListView MCIview;
     ShowMoreAdapter adapter;
+    MainActivity main;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +41,10 @@ public class ShowMore extends AppCompatActivity {
         MCIview.setAdapter(adapter);
 
         GetMoreTask myTask = new GetMoreTask();
-        myTask.execute("http://api.openweathermap.org/data/2.5/forecast/daily?q="+n+"&appid=2a8fc52212d1d020c4b3ac497469a6ef");
+        myTask.execute("http://api.openweathermap.org/data/2.5/forecast/daily?q=" + n + "&appid=2a8fc52212d1d020c4b3ac497469a6ef");
         adapter.notifyDataSetChanged();
 
+        main= new MainActivity();
 
     }
 
@@ -101,7 +103,7 @@ public class ShowMore extends AppCompatActivity {
                     JSONObject weatherData = weatherArray.getJSONObject(weatherArray.length()-1);
                     MoreObj.setClouds(weatherData.getString("main"));
                     MoreObj.setDescription(weatherData.getString("description"));
-                    MoreObj.setIcoID(WeatherIcon(weatherData.getString("icon")));
+                    MoreObj.setIcoID(main.WeatherIcon(weatherData.getString("icon")));
 
                     MCI.add(MoreObj);
 
@@ -115,53 +117,6 @@ public class ShowMore extends AppCompatActivity {
             }
 
             return null;
-        }
-    }
-
-    public int WeatherIcon(String ico) {
-        if(ico.equals("01d"))
-        {
-            return R.drawable.b13;
-        }
-        else if(ico.equals("01n"))
-        {
-            return R.drawable.b3;
-        }
-        else if(ico.equals("02d"))
-        {
-            return R.drawable.b5;
-        }
-        else if(ico.equals("02n"))
-        {
-            return R.drawable.b4;
-        }
-        else if((ico.equals("03d"))||ico.equals("04d")||ico.equals("03n")||ico.equals("04n"))
-        {
-            return R.drawable.b1;
-        }
-        else if((ico.equals("09d"))||(ico.equals("09n")))
-        {
-            return R.drawable.b2;
-        }
-        else if((ico.equals("10d"))||(ico.equals("10n")))
-        {
-            return R.drawable.b6;
-        }
-        else if((ico.equals("11d"))||(ico.equals("11n")))
-        {
-            return R.drawable.b12;
-        }
-        else if((ico.equals("13d"))||(ico.equals("13n")))
-        {
-            return R.drawable.b9;
-        }
-        else if((ico.equals("50d"))||(ico.equals("50n")))
-        {
-            return R.drawable.b14;
-        }
-        else
-        {
-            return R.drawable.error;
         }
     }
 
